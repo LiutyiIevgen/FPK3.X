@@ -4,4 +4,5 @@ globals.h  \
 MainLibrary.h  \
 Timer.h  \
  Can.h  \
-PathComands.h 
+PathComands.h  \
+InOutSignals.h 

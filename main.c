@@ -15,6 +15,7 @@
 #include "Timer.h"
 #include "Can.h"
 #include "PathComands.h"
+#include "InOutSignals.h"
 
 // FOSC
 #pragma config FOSFPR = XT_PLL16             // Oscillator (XT)
@@ -54,7 +55,7 @@ unsigned int maj_i = 0;
 
 //clear WDT timer
 void __attribute__((__interrupt__, __auto_psv__)) _T1Interrupt(void);
-//
+//InOutSignals send
 void __attribute__((__interrupt__, __auto_psv__)) _T4Interrupt(void);
 // Can Receive Parameter
 void __attribute__ ((__interrupt__, __auto_psv__)) _C1Interrupt (void);
@@ -85,8 +86,13 @@ void __attribute__((__interrupt__, __auto_psv__)) _T4Interrupt(void)
     // Clear Timer 4 interrupt flag
     // Write to can bus
     _T4IF = 0;
-     //TurnOnOrOffRelay(GetPathComandsDown());
-   // CanOpenSendCurrentObjectState(50000,800000,5000,0);
+    char relayData[8] = {0,0,0,0,0,0,0,0};
+    relayData[0] = ~ReadInSignals();
+    relayData[1] = ~ReadOutSignals();
+    unsigned int sId;
+    sId = 0x480;
+    sId += _nodeId;
+    Can1SendData(sId, relayData, 2);
 }
 void __attribute__ ((__interrupt__, __auto_psv__)) _C1Interrupt (void){
     IFS1bits.C1IF = 0; //Clear CAN1 interrupt flag
@@ -99,6 +105,6 @@ void __attribute__ ((__interrupt__, __auto_psv__)) _C1Interrupt (void){
     }
     unsigned int sId = C1RX0SIDbits.SID;
     Can1ReceiveData(rxData);
-    TurnOnOrOffRelay(rxData[1]);
+    WriteOutSignals(0b11111111, rxData[3]);
     C1RX0CONbits.RXFUL = 0;
   }
