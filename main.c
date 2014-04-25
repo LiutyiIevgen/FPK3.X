@@ -55,7 +55,7 @@ unsigned int maj_i = 0;
 
 //clear WDT timer
 void __attribute__((__interrupt__, __auto_psv__)) _T1Interrupt(void);
-//InOutSignals send
+//write to can bus
 void __attribute__((__interrupt__, __auto_psv__)) _T4Interrupt(void);
 // Can Receive Parameter
 void __attribute__ ((__interrupt__, __auto_psv__)) _C1Interrupt (void);

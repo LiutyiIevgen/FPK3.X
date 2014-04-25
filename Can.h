@@ -15,7 +15,6 @@
  * @todo init can 1
  */
 void Can1Initialization(void);
-
 /**
  * @autor Kyrylov Andrii
  * @param unsigned int - message id
@@ -24,7 +23,6 @@ void Can1Initialization(void);
  * @todo Send data(8 byte) over can interface
  */
 void Can1SendData(unsigned int, char*, unsigned char);
-
 /**
  * @autor Kyrylov Andrii
  * @param char* - output buffer
